@@ -1,0 +1,60 @@
+					linux 常用命令
+
+用户目录：cd ~
+
+文本编辑器：gredit
+
+文件查找：find /etc -name startup.sh
+
+移动文件：mv filename path
+
+文件重命名：mv hello.txt haha.txt
+
+新建文件：touch hello.txt
+
+删除文件：rm hello.xml   -i：有提示		-f：强制删除，无提示
+
+新建文件夹：mkdir hello
+
+删除文件夹：rm -r hello		-r：删除文件夹及其文件
+
+拷贝文件：cp hello.xml /opt/temp
+
+文件权限：drwxr-xr-x，第一个字符标示文件类型，后边9个分三组，表属主、同组、其他用户权限
+
+连接显示一个或多个文件信息：cat -n(所有标号) -b(空行不标) 
+				  合并文件：cat hello.xml haha.xml > heha.xml
+
+软链接：ln -s /temp temp
+
+查看文件夹大小：du -h --max-depth=0 /lib/jvm
+
+查看文件大小：du -h hello.txt
+
+
+vi： :wq(保存退出)  :w newFile(另存为)  :q(不保存退出)	
+	 :e!(放弃修改，从上次保存的地方开始)
+
+
+打开或关闭某个端口，例如：
+sudo ufw allow smtp　      #允许所有的外部IP访问本机的25/tcp (smtp)端口 
+sudo ufw allow 22/tcp      #允许所有的外部IP访问本机的22/tcp (ssh)端口 
+sudo ufw allow 53          #允许外部访问53端口(tcp/udp) 
+sudo ufw allow from 192.168.1.100 #允许此IP访问所有的本机端口 
+sudo ufw allow proto udp 192.168.0.1 port 53 to 192.168.0.2 port 53 
+sudo ufw deny smtp         #禁止外部访问smtp服务 
+sudo ufw delete allow smtp #删除上面建立的某条规则 
+
+
+.tar.gz 
+解压：tar zxvf FileName.tar.gz 
+压缩：tar zcvf FileName.tar.gz DirName 
+--------------------------------------------- 
+.zip 
+解压：unzip FileName.zip 
+压缩：zip FileName.zip DirName 
+--------------------------------------------- 
+.rar 
+解压：rar a FileName.rar 
+压缩：r ar e FileName.rar
+

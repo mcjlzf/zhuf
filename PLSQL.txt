@@ -1,0 +1,149 @@
+（1）PLSQL变量声明
+	DECLARE
+		v_hiredate		DATE;
+		v_deptno		NUMBER(2) NOT NULL := 10;
+		v_location		VARCHAR2(13) := 'Atlanta';
+		c_comm 			CONSTANT NUMBER := 1400;
+
+	变量命名遵循通用规则，v_name表示一个变量，c_name表示一个常量（CONSTANT）；一行声明一个变量；进行初始化。
+	在同一个块中，避免命名与数据库表中的字段名相同的变量。
+
+
+（2）PLSQL特有的 %TYPE 属性来声明与XXXX 类型一致的变量类型
+	v_min_balance v_balance%TYPE := 10;
+
+
+（3）PLSQL的块是可以嵌套的，变量的作用范围与其他语言类似，
+	当内外块出现同名变量var，限定词outer表示外层，里层要访问外层的var 时使用outer.var这种格式：
+
+（4）SELECT INTO 语句： 用于把从数据库查询出内容存入变量
+	DECLARE
+		v_hire_date employees.hire_date%TYPE;
+		v_salary employees.salary%TYPE;
+	BEGIN
+		SELECT hire_date, salary
+		INTO v_hire_date, v_salary
+		FROM employees
+		WHERE employee_id = 100;
+	END;
+
+	注意点：该语句支持单行的查询结果，如果Where条件控制不好，导致多行查询结果，则会引发Too_many_rows的例外
+
+（5）和其他语言一样，控制主要包括判断和循环；
+	判断语句的语法与其他语言类似：
+		IF condition THEN
+			statements;
+		[ELSIF condition THEN
+			statements;]
+		[ELSE
+			statements;]
+		END IF;
+
+		CASE selector
+		WHEN expression1 THEN result1
+		WHEN expression2 THEN result2
+		...
+		WHEN expressionN THEN resultN
+		[ELSE resultN+1;]
+		END;
+
+（6）循环
+	LOOP
+		statement1;
+		. . .
+		EXIT [WHEN condition];
+	END LOOP;	
+
+	WHILE condition LOOP
+		statement1;
+		statement2;
+		. . .
+	END LOOP;
+
+	FOR counter IN [REVERSE]
+			lower_bound..upper_bound LOOP
+		statement1;
+		statement2;
+		. . .
+	END LOOP;
+
+（7）隐式游标的几个有用属性：
+	SQL%ROWCOUNT 受最近的SQL 语句影响的行数
+	SQL%FOUND 最近的SQL 语句是否影响了一行以上的 数据
+	SQL%NOTFOUND 最近的SQL 语句是否未影响任何数据
+	SQL%ISOPEN 对于隐式游标而言永远为FALSE
+
+（8）显式游标：对于返回多行结果的SQL语句的返回结果，可使用
+	显式游标独立的处理器中每一行的数据。
+	显式游标的相关函数可以做到：
+	1 、一行一行的处理返回的数据。
+	2 、保持当前处理行的一个跟踪，像一个指针一样指示当前的处理的记录。
+	3 、允许程序员在PLSQL块中人为的控制游标的开启、关闭、上下移动
+
+	DECLARE
+		v_empno employees.employee_id%TYPE;
+		v_ename employees.last_name%TYPE;
+		CURSOR emp_cursor IS
+			SELECT employee_id, last_name
+			FROM employees;
+	BEGIN
+		OPEN emp_cursor;
+		LOOP
+			FETCH emp_cursor INTO v_empno, v_ename;
+			EXIT WHEN emp_cursor%ROWCOUNT > 10 
+				OR emp_cursor%NOTFOUND;
+			DBMS_OUTPUT.PUT_LINE (TO_CHAR(v_empno) ||' '|| v_ename);
+		END LOOP;
+		CLOSE emp_cursor;
+	END ;
+
+（9）PLSQL 中的例外一般有两种：
+	1、Oracle内部错误抛出的例外：这又分为预定义例外（有错误号+ 常量定义）和非预定义例外（仅有错误号，无常量定义）
+	2、程序员显式的抛出的例外
+
+	EXCEPTION
+	WHEN exception1 [OR exception2 . . .] THEN
+	statement1;
+	statement2;
+	. . .
+	[WHEN exception3 [OR exception4 . . .] THEN
+	statement1;
+	statement2;
+	. . .]
+	[WHEN OTHERS THEN
+	statement1;
+	statement2;
+	. . .]
+
+	Oracle 提供了两个内置函数 SQLCODE 和 SQLERRM 分别用来返回Oracle 错误号和错误描述
+
+	常见例外：
+		NO_DATA_FOUND
+		TOO_MANY_ROWS
+		INVALID_CURSOR
+		ZERO_DIVIDE
+		DUP_VAL_ON_INDEX
+
+==========================================================
+
+PLSQL 中的存储过程和函数
+
+（1）存储过程定义
+	CREATE OR REPLACE PROCEDURE query_emp
+	(p_id IN employees.employee_id%TYPE,
+	p_name OUT employees.last_name%TYPE,
+	p_salary OUT employees.salary%TYPE,
+	p_comm OUT employees.commission_pct%TYPE)
+	IS
+	BEGIN
+	SELECT last_name, salary, commission_pct
+	INTO p_name, p_salary, p_comm
+	FROM employees
+	WHERE employee_id = p_id;
+	END query_emp;
+
+（2）删除储存过程
+	drop procedure procedure_name;
+
+（3）PLSQL存储函数
+		

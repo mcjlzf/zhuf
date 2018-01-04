@@ -1,0 +1,47 @@
+1. jsp頁面基於java語言，都被編譯成servlet，具有java的特點。
+
+2. jsp執行流程：用戶訪問--服務器找到jsp頁面--轉譯成servlet源碼--源碼編譯為class文件--文件加載進內存并執行--生成html發送給客戶機其瀏覽器進行相應的顯示。
+
+3. jsp聲明語句：<%!  聲明語句  %>，使用聲明語句的變量為全局變量。
+
+4. jsp scriptlets：<% java代碼 %>
+
+5. jsp表達式：<%= java代碼 %>，不必也不能使用分號結束表達式
+
+6. jsp註釋：<!--    -->，可在客戶端顯示；<%--  --%>,不可。jsp腳本中，還可使用java註釋。
+
+7. jap指令：
+	language：<%@ page language = "java" %>
+	extends：<%@ page extends = "父類" %>
+	import：<%@ page import = "包名" %>
+	session：<%@ page session = "true | false" %>
+	buffer：<%@ page buffer = "none | 40kb"% >
+	autoflush:
+	isThreadSafe:
+	info：設置jsp相關信息，可通過Servlet.getSevletInfo獲取
+	errorPage：
+	isErrorPage：
+	contentType：<%@ page contentType="text/html; charset=BIG5"%>，指定jspMIME格式及網頁編碼
+	pageEncoding：
+	isElIgnored：
+	include：<%@ include file = "被包含文件地址" %>
+	tagLib：<%@ tagLib uri = "標籤庫位置" prefix = "前綴" %>
+	
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

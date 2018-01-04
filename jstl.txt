@@ -1,0 +1,62 @@
+（1）JSTL 标签 库由标签库和 EL 表达式语言两个部分组成。
+
+（2）多用途核心标签： <c:out> 、 <c:set> 、 <c:remove> 、 <c:catch> 。
+	 条件控制标签： <c:if> 、 <c:choose> 、 <c:when> 、 <c:otherwise> 。
+	 循环控制标签： <c:forEach> 、 <c:forTokens> 。
+	 URL 相关标签： <c:import> 、 <c:url> 、 <c:redirect> 、 <c:param> 。
+
+（3）<c:out value="${sessionScope.anyValue}" 
+					default="no value"escapeXml="false"/>
+
+	<c:set value="this is andy" var="oneString"/>
+					${oneString} <br>
+
+	<c:remove var="sampleValue" scope="session"/>
+					${sessionScope.sampleValue} <br>
+
+	<c:catch var="err">
+		${param.sampleSingleValue[9] == 3}
+	</c:catch>
+	${err}
+
+	<c:if test="${paramValues.sampleValue[2] == 12}" var="visits">
+		It is 12
+	</c:if>
+
+	<c:choose>
+		<c:when test="${paramValues.sampleValue[2] == 11}">
+			not 12 not 13,it is 11
+		</c:when>
+		<c:when test="${paramValues.sampleValue[2] == 12}">
+			not 11 not 13,it is 12
+		</c:when>
+		<c:otherwise>
+			not 11 、 12
+		</c:otherwise>
+	</c:choose>
+
+	<c:forEach items="${sessionScope.arrayList}" var="arrayListI">
+		${arrayListI}
+	</c:forEach>
+
+	<c:forTokens items="aa,bb,cc,dd" begin="0" end="2" step="2"
+		delims="," var="aValue">
+		${aValue}
+	</c:forTokens>
+
+	<c:url value="/MyHtml.html" var="urlPage" />
+	<a href="${urlPage}">link</a>
+	得到了一个 URL 后，以 EL 表达式放入 <a> 标签的 href
+	属性，达到链接的目的。
+
+	<c:import url="/MyHtml.html" var="thisPage" />
+	<c:import url="/MyHtml.html" context=”/sample2” var="thisPage"/>
+	<c:import url="www.sample.com/MyHtml.html" var="thisPage"/>
+
+	<c:redirect url="/MyHtml.html"/>
+
+	<c:param name="userName" value=”RW” />
+
+==========================================================================
+
+
